@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "screenlib.h"
 
 int main() {
   printf("Test\n");

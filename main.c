@@ -1,4 +1,5 @@
 #include "screenlib.h"
+#include <unistd.h>
 
 const char BLANK_CHR = ' ';
 #define WORD_SIZE 32
@@ -117,6 +118,7 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   }
 
   putchar('\n');
+  if (opt != CLOSE) sleep(1);
 
   return opt;
 }
@@ -200,6 +202,9 @@ void playHangman(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* word)
 
   } while (1);
 
+
+  // Delay
+  sleep(1);
 }
 
 int main() {

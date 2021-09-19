@@ -70,7 +70,6 @@ void drawLoose(char screen[SCREEN_HEIGHT][SCREEN_WIDTH])
 enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Options opt)
 {
   // Clear Screen
-  clear();
   fillScr(screen, BLANK_CHR);
 
 
@@ -95,6 +94,7 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
 
 
   // Render Screen
+  clear();
   renderScr(screen);
 
 

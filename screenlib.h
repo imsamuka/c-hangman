@@ -4,14 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WIDTH 80
+#define SCREEN_HEIGHT 10
+#define SCREEN_WIDTH 80
 
-typedef struct
-{
-  char height;
-  //char canvas[][WIDTH];
-} Screen;
-
-void clearScr();
-void insertStr(Screen screen, char* str, char y, char x);
-void renderScr(Screen screen);
+void clear();
+void insertStr(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* str, char y, char x);
+void fillScr(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char chr);
+void renderScr(char screen[SCREEN_HEIGHT][SCREEN_WIDTH]);

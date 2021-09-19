@@ -117,18 +117,15 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   switch (opt)
   {
   case HARD:
-    printf("Hard!!!!");
-    break;
+    printf("Hard!!!!"); break;
   case MEDIUM:
-    printf("Medium!");
-    break;
+    printf("Medium!"); break;
   case EASY:
-    printf("Easy...");
-    break;
+    printf("Easy..."); break;
   case CLOSE:
+    printf("Close :("); break;
   default:
-    printf("Close :(");
-    break;
+    printf("Error????"); break;
   }
 
   printf("\n");

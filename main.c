@@ -5,6 +5,28 @@ const char BLANK_CHR = ' ';
 enum Options { CLOSE, EASY, MEDIUM, HARD };
 const u_char OPT_OFFSET = 48;
 
+char upperChar(char chr)
+{
+  if (chr >= 97 && chr <= 122)
+    return chr - 32; // ASCII offset
+  return chr;
+}
+
+u_char chrInStr(char chr, char* str)
+{
+  for (u_char i = 0; str[i] != '\0'; i++)
+    if (chr == str[i]) return 1;
+  return 0;
+}
+
+u_char strEqual(char* str1, char* str2)
+{
+  u_char i;
+  for (i = 0; str1[i] != '\0'; i++)
+    if (str1[i] != str2[i]) return 0;
+  return str1[i] == str2[i];
+}
+
 void drawMan(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char countdown)
 {
   // Clear

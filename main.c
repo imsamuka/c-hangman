@@ -55,19 +55,6 @@ void drawMan(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char countdown)
   }
 }
 
-void drawLoose(char screen[SCREEN_HEIGHT][SCREEN_WIDTH])
-{
-  // Pole
-  for (char i = 2; i <= 8; i++)
-    screen[i][2] = '|';
-
-  // Line above
-  insertStr(screen, "_______", 1, 2);
-
-  // Above the head
-  screen[2][8] = '|';
-}
-
 enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Options opt)
 {
   // Clear Screen
@@ -148,7 +135,12 @@ void playHangman(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* word)
   fillScr(screen, BLANK_CHR);
   insertStr(screen, "Tried: ", 2, 14);
   insertStr(screen, "Tries: ", 3, 14);
-  drawLoose(screen);
+  {
+    // Draw Loose
+    for (char i = 2; i <= 8; i++) screen[i][2] = '|'; // Pole
+    insertStr(screen, "_______", 1, 2); // Line above
+    screen[2][8] = '|'; // Above the head
+  }
 
 
   // Start Game Loop

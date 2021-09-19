@@ -69,11 +69,12 @@ void drawLoose(char screen[SCREEN_HEIGHT][SCREEN_WIDTH])
 
 enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Options opt)
 {
-
-  // Clear screen
+  // Clear Screen
   clear();
   fillScr(screen, BLANK_CHR);
 
+
+  // Draw Static Text
   insertStr(screen, "C Hangman!", 1, 6);
   insertStr(screen, "Select a Difficulty:", 3, 3);
 
@@ -82,15 +83,22 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   insertStr(screen, "Easy", 7, 6);
   insertStr(screen, "Close", 8, 6);
 
+
+  // Draw the respective numbers
   screen[5][4] = HARD + OPT_OFFSET;
   screen[6][4] = MEDIUM + OPT_OFFSET;
   screen[7][4] = EASY + OPT_OFFSET;
   screen[8][4] = CLOSE + OPT_OFFSET;
 
+  // Draw the selected option
   insertStr(screen, "(default)", 8 - opt, 14);
 
+
+  // Render Screen
   renderScr(screen);
 
+
+  // Ask Difficulty Number
   {
     u_char selection;
 
@@ -103,6 +111,7 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   }
 
 
+  // Show Selected Difficulty
   printf("Selected ");
 
   switch (opt)

@@ -1,6 +1,7 @@
 #include "screenlib.h"
 
 const char BLANK_CHR = ' ';
+#define WORD_SIZE 32
 
 enum Options { CLOSE, EASY, MEDIUM, HARD };
 const u_char OPT_OFFSET = 48;
@@ -133,15 +134,93 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   return opt;
 }
 
+void playHangman(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* word)
+{
+  // Setup Variables
+  u_char countdown = 6;
+  char letter = '\0';
+  char tried[91 - 65 + 1] = ""; // Alphabet size + '\0'
+  char solvedWord[WORD_SIZE] = "";
+  for (u_char i = 0; word[i] != '\0'; i++) solvedWord[i] = '_';
+
+
+  // Setup Screen
+  fillScr(screen, BLANK_CHR);
+  insertStr(screen, "Tried: ", 2, 14);
+  insertStr(screen, "Tries: ", 3, 14);
+  drawLoose(screen);
+
+
+  // Start Game Loop
+  do {
+    // Draw Game State
+    insertStr(screen, tried, 2, 14 + 7);
+    screen[3][14 + 7] = countdown + OPT_OFFSET;
+    for (u_char i = 0; solvedWord[i] != '\0'; i++) screen[8][14 + i*2] = solvedWord[i];
+    drawMan(screen, countdown);
+
+
+    // Render Screen
+    clear();
+    renderScr(screen);
+
+
+    // Win and Lose Condition
+    {
+      if (countdown <= 0)
+      {
+        printf("You Lose!\n");
+        break;
+      }
+
+      if (strEqual(word, solvedWord))
+      {
+        printf("You WIN!!!!!\n");
+        break;
+      }
+    }
+
+
+    // Ask Letter
+    {
+      // Get Letter
+      printf("Type the letter: ");
+      scanf("%c", &letter);
+
+      // Validate letter
+      letter = upperChar(letter);
+      if (letter < 65 || letter > 90) continue;
+      if (chrInStr(letter, tried)) continue;
+
+      // Update tried
+      u_char i;
+      for (i = 0; tried[i] != '\0'; i++);
+      tried[i] = letter;
+
+      if (chrInStr(letter, word))
+      {
+        // Update solvedWord
+        for (i = 0; word[i] != '\0'; i++)
+          if (word[i] == letter) solvedWord[i] = letter;
+      }
+      else countdown--;
+    }
+
+  } while (1);
+
+}
+
 int main() {
 
   char screen[SCREEN_HEIGHT][SCREEN_WIDTH];
   enum Options opt = askDifficulty(screen, HARD);
+  char word[WORD_SIZE] = "PANACEIA";
 
   while (opt != CLOSE)
   {
-    // Select a word
-    // Start the game
+    // Select a word based on difficulty
+    // Play the game
+    playHangman(screen, word);
     // Start Again
     opt = askDifficulty(screen, opt);
   }

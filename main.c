@@ -59,8 +59,10 @@ void drawMan(Screen screen, char countdown)
   }
 }
 
-enum Options askDifficulty(Screen screen, enum Options opt)
+enum Options askDifficulty(Screen screen)
 {
+  enum Options opt;
+
   // Clear Screen
   fillScr(screen, BLANK_CHR);
 
@@ -80,9 +82,6 @@ enum Options askDifficulty(Screen screen, enum Options opt)
   screen[6][4] = MEDIUM + OPT_OFFSET;
   screen[7][4] = EASY + OPT_OFFSET;
   screen[8][4] = CLOSE + OPT_OFFSET;
-
-  // Draw the selected option
-  insertStr(screen, "(default)", 8 - opt, 14);
 
 
   // Render Screen
@@ -214,7 +213,7 @@ void playHangman(Screen screen, char* word)
 int main() {
 
   Screen screen;
-  enum Options opt = askDifficulty(screen, HARD);
+  enum Options opt = askDifficulty(screen);
   char word[WORD_SIZE] = "PANACEIA";
 
   while (opt != CLOSE)
@@ -223,7 +222,7 @@ int main() {
     // Play the game
     playHangman(screen, word);
     // Start Again
-    opt = askDifficulty(screen, opt);
+    opt = askDifficulty(screen);
   }
 
   printf("Goodbye! Let's play again :>\n");

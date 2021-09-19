@@ -29,7 +29,7 @@ u_char strEqual(char* str1, char* str2)
   return str1[i] == str2[i];
 }
 
-void drawMan(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char countdown)
+void drawMan(Screen screen, char countdown)
 {
   // Clear
   for (char i = 3; i <= 6; i++)
@@ -56,7 +56,7 @@ void drawMan(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char countdown)
   }
 }
 
-enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Options opt)
+enum Options askDifficulty(Screen screen, enum Options opt)
 {
   // Clear Screen
   fillScr(screen, BLANK_CHR);
@@ -123,7 +123,7 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
   return opt;
 }
 
-void playHangman(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* word)
+void playHangman(Screen screen, char* word)
 {
   // Setup Variables
   u_char countdown = 6;
@@ -209,7 +209,7 @@ void playHangman(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], char* word)
 
 int main() {
 
-  char screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+  Screen screen;
   enum Options opt = askDifficulty(screen, HARD);
   char word[WORD_SIZE] = "PANACEIA";
 

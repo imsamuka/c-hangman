@@ -31,26 +31,29 @@ u_char strEqual(char* str1, char* str2)
 
 void drawMan(Screen screen, char countdown)
 {
+  const u_char x = 7;
+  const u_char y = 3;
+
   // Clear
-  for (char i = 3; i <= 6; i++)
-      for (char j = 7; j <= 9; j++)
+  for (char i = y; i <= y+3; i++)
+      for (char j = x; j <= x+2; j++)
         screen[i][j] = BLANK_CHR;
 
   switch (countdown)
   {
   case 0:
-    screen[6][9] = '\\';
+    screen[y+3][x+2] = '\\';
   case 1:
-    screen[6][7] = '/';
+    screen[y+3][x+0] = '/';
   case 2:
-    screen[4][9] = '\\';
+    screen[y+1][x+2] = '\\';
   case 3:
-    screen[4][7] = '/';
+    screen[y+1][x+0] = '/';
   case 4:
-    screen[4][8] = '|';
-    screen[5][8] = '|';
+    screen[y+1][x+1] = '|';
+    screen[y+2][x+1] = '|';
   case 5:
-    screen[3][8] = 'O';
+    screen[y+0][x+1] = 'O';
   default:
     break;
   }

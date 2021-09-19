@@ -128,7 +128,7 @@ enum Options askDifficulty(char screen[SCREEN_HEIGHT][SCREEN_WIDTH], enum Option
     printf("Error????"); break;
   }
 
-  printf("\n");
+  putchar('\n');
 
   return opt;
 }

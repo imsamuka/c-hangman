@@ -92,10 +92,11 @@ enum Options askDifficulty(Screen screen, enum Options opt)
 
   // Ask Difficulty Number
   {
-    u_char selection;
+    char selection;
 
     printf("Type the number: ");
-    scanf("%c", &selection);
+    scanf(" %c", &selection);
+
     if (selection - OPT_OFFSET >= CLOSE && selection - OPT_OFFSET <= HARD)
     {
       opt = selection - OPT_OFFSET;
@@ -182,7 +183,7 @@ void playHangman(Screen screen, char* word)
     {
       // Get Letter
       printf("Type the letter: ");
-      scanf("%c", &letter);
+      scanf(" %c", &letter);
 
       // Validate letter
       letter = upperChar(letter);

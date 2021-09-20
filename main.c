@@ -39,35 +39,7 @@ bool strEqual(char* str1, char* str2)
   return str1[i] == str2[i];
 }
 
-void drawMan(Screen screen, char countdown)
-{
-  const u_char x = 7;
-  const u_char y = 3;
 
-  // Clear
-  for (char i = y; i <= y+3; i++)
-      for (char j = x; j <= x+2; j++)
-        screen[i][j] = BLANK_CHR;
-
-  switch (countdown)
-  {
-  case 0:
-    screen[y+3][x+2] = '\\';
-  case 1:
-    screen[y+3][x+0] = '/';
-  case 2:
-    screen[y+1][x+2] = '\\';
-  case 3:
-    screen[y+1][x+0] = '/';
-  case 4:
-    screen[y+1][x+1] = '|';
-    screen[y+2][x+1] = '|';
-  case 5:
-    screen[y+0][x+1] = 'O';
-  default:
-    break;
-  }
-}
 
 enum Options askDifficulty(Screen screen)
 {
@@ -134,88 +106,6 @@ enum Options askDifficulty(Screen screen)
   if (opt != CLOSE) sleep(1);
 
   return opt;
-}
-
-void playHangman(Screen screen, char* word)
-{
-  // Setup Variables
-  u_char countdown = 6;
-  char letter = '\0';
-  char tried[91 - 65 + 1] = ""; // Alphabet size + '\0'
-  char solvedWord[WORD_SIZE] = "";
-  for (u_char i = 0; word[i] != '\0'; i++) solvedWord[i] = '_';
-
-
-  // Setup Screen
-  fillScr(screen, BLANK_CHR);
-  insertStr(screen, "Tried: ", 2, 14);
-  insertStr(screen, "Tries: ", 3, 14);
-  {
-    // Draw Loose
-    for (char i = 2; i <= 8; i++) screen[i][2] = '|'; // Pole
-    insertStr(screen, "_______", 1, 2); // Line above
-    screen[2][8] = '|'; // Above the head
-  }
-
-
-  // Start Game Loop
-  do {
-    // Draw Game State
-    insertStr(screen, tried, 2, 14 + 7);
-    screen[3][14 + 7] = countdown + OPT_OFFSET;
-    for (u_char i = 0; solvedWord[i] != '\0'; i++) screen[8][14 + i*2] = solvedWord[i];
-    drawMan(screen, countdown);
-
-
-    // Render Screen
-    clear();
-    renderScr(screen);
-
-
-    // Win and Lose Condition
-    {
-      if (countdown <= 0)
-      {
-        printf("You Lose!\n");
-        break;
-      }
-
-      if (strEqual(word, solvedWord))
-      {
-        printf("You WIN!!!!!\n");
-        break;
-      }
-    }
-
-
-    // Ask Letter
-    {
-      // Get Letter
-      printf("Type the letter: ");
-      scanf(" %c", &letter);
-
-      // Validate letter
-      letter = upperChar(letter);
-      if (letter < 65 || letter > 90) continue;
-      if (chrInStr(letter, tried)) continue;
-
-      // Update tried
-      appendChr(letter, tried);
-
-      if (chrInStr(letter, word))
-      {
-        // Update solvedWord
-        for (u_char i = 0; word[i] != '\0'; i++)
-          if (word[i] == letter) solvedWord[i] = letter;
-      }
-      else countdown--;
-    }
-
-  } while (1);
-
-
-  // Delay
-  sleep(1);
 }
 
 bool isValidWord(char* word, enum Options opt)
@@ -333,8 +223,121 @@ void getWord(char* filePath, enum Options opt, char* word)
   }
 }
 
-int main() {
+void drawMan(Screen screen, char countdown)
+{
+  const u_char x = 7;
+  const u_char y = 3;
 
+  // Clear
+  for (char i = y; i <= y+3; i++)
+      for (char j = x; j <= x+2; j++)
+        screen[i][j] = BLANK_CHR;
+
+  switch (countdown)
+  {
+  case 0:
+    screen[y+3][x+2] = '\\';
+  case 1:
+    screen[y+3][x+0] = '/';
+  case 2:
+    screen[y+1][x+2] = '\\';
+  case 3:
+    screen[y+1][x+0] = '/';
+  case 4:
+    screen[y+1][x+1] = '|';
+    screen[y+2][x+1] = '|';
+  case 5:
+    screen[y+0][x+1] = 'O';
+  default:
+    break;
+  }
+}
+
+void playHangman(Screen screen, char* word)
+{
+  // Setup Variables
+  u_char countdown = 6;
+  char letter = '\0';
+  char tried[91 - 65 + 1] = ""; // Alphabet size + '\0'
+  char solvedWord[WORD_SIZE] = "";
+  for (u_char i = 0; word[i] != '\0'; i++) solvedWord[i] = '_';
+
+
+  // Setup Screen
+  fillScr(screen, BLANK_CHR);
+  insertStr(screen, "Tried: ", 2, 14);
+  insertStr(screen, "Tries: ", 3, 14);
+  {
+    // Draw Loose
+    for (char i = 2; i <= 8; i++) screen[i][2] = '|'; // Pole
+    insertStr(screen, "_______", 1, 2); // Line above
+    screen[2][8] = '|'; // Above the head
+  }
+
+
+  // Start Game Loop
+  do {
+    // Draw Game State
+    insertStr(screen, tried, 2, 14 + 7);
+    screen[3][14 + 7] = countdown + OPT_OFFSET;
+    for (u_char i = 0; solvedWord[i] != '\0'; i++) screen[8][14 + i*2] = solvedWord[i];
+    drawMan(screen, countdown);
+
+
+    // Render Screen
+    clear();
+    renderScr(screen);
+
+
+    // Win and Lose Condition
+    {
+      if (countdown <= 0)
+      {
+        printf("You Lose!\n");
+        break;
+      }
+
+      if (strEqual(word, solvedWord))
+      {
+        printf("You WIN!!!!!\n");
+        break;
+      }
+    }
+
+
+    // Ask Letter
+    {
+      // Get Letter
+      printf("Type the letter: ");
+      scanf(" %c", &letter);
+
+      // Validate letter
+      letter = upperChar(letter);
+      if (letter < 65 || letter > 90) continue;
+      if (chrInStr(letter, tried)) continue;
+
+      // Update tried
+      appendChr(letter, tried);
+
+      if (chrInStr(letter, word))
+      {
+        // Update solvedWord
+        for (u_char i = 0; word[i] != '\0'; i++)
+          if (word[i] == letter) solvedWord[i] = letter;
+      }
+      else countdown--;
+    }
+
+  } while (1);
+
+
+  // Delay
+  sleep(1);
+}
+
+
+
+int main() {
   Screen screen;
   enum Options opt = askDifficulty(screen);
   char word[WORD_SIZE] = "";

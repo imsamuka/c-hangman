@@ -1,4 +1,5 @@
 #include "screenlib.h"
+#include <stdbool.h>
 #include <unistd.h>
 
 const char BLANK_CHR = ' ';
@@ -22,14 +23,14 @@ void appendChr(char chr, char* str)
   str[i+1] = '\0';
 }
 
-u_char chrInStr(char chr, char* str)
+bool chrInStr(char chr, char* str)
 {
   for (u_char i = 0; str[i] != '\0'; i++)
     if (chr == str[i]) return 1;
-  return 0;
+  return false;
 }
 
-u_char strEqual(char* str1, char* str2)
+bool strEqual(char* str1, char* str2)
 {
   u_char i;
   for (i = 0; str1[i] != '\0'; i++)

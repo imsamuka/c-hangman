@@ -14,6 +14,14 @@ char upperChar(char chr)
   return chr;
 }
 
+void appendChr(char chr, char* str)
+{
+  u_char i;
+  for (i = 0; str[i] != '\0'; i++);
+  str[i] = chr;
+  str[i+1] = '\0';
+}
+
 u_char chrInStr(char chr, char* str)
 {
   for (u_char i = 0; str[i] != '\0'; i++)
@@ -190,14 +198,12 @@ void playHangman(Screen screen, char* word)
       if (chrInStr(letter, tried)) continue;
 
       // Update tried
-      u_char i;
-      for (i = 0; tried[i] != '\0'; i++);
-      tried[i] = letter;
+      appendChr(letter, tried);
 
       if (chrInStr(letter, word))
       {
         // Update solvedWord
-        for (i = 0; word[i] != '\0'; i++)
+        for (u_char i = 0; word[i] != '\0'; i++)
           if (word[i] == letter) solvedWord[i] = letter;
       }
       else countdown--;

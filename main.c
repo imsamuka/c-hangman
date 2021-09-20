@@ -217,15 +217,131 @@ void playHangman(Screen screen, char* word)
   sleep(1);
 }
 
+bool isValidWord(char* word, enum Options opt)
+{
+  char letters[WORD_SIZE] = "";
+  u_char uniqueLetters = 0;
+
+  for (u_char i = 0; word[i] != '\0'; i++)
+  {
+    if (!chrInStr(word[i], letters))
+    {
+      appendChr(word[i], letters);
+      uniqueLetters++;
+    }
+  }
+
+  switch (opt)
+  {
+  case HARD:
+    return uniqueLetters >= 5;
+  case MEDIUM:
+    return uniqueLetters == 4;
+  case EASY:
+  default:
+    return uniqueLetters == 3;
+  }
+}
+
+void getWord(char* filePath, enum Options opt, char* word)
+{
+  FILE* fptr = (void*) 0;
+
+  int wordIndex = rand() % 400; // Used to select a random word
+  int wordsFound = 0;
+
+  bool valid = false;
+
+  char chr;
+  char buf[256] = "";
+
+  char wordCandidate[WORD_SIZE] = "";
+
+  printf("wordIndex: %i\n", wordIndex);
+
+  while (wordIndex > 0)
+  {
+
+    // Open file
+    fptr = fopen(filePath, "r");
+    if (!fptr)
+    {
+      printf("Failed to open file to choose word...\n");
+      exit(1);
+    }
+
+    // Iterate through file
+    while (wordIndex > 0 && fgets(buf, 256, fptr))
+    {
+      // Iterate through buffer
+      for (u_char i = 0; i < 256 && buf[i] != '\0'; i++)
+      {
+        chr = upperChar(buf[i]);
+
+        // Start a word
+        if (!valid && chr == ' ')
+        {
+          valid = true;
+          wordCandidate[0] = '\0';
+        }
+
+        // Construct the word
+        else if (valid && chr >= 65 && chr <= 90) appendChr(chr, wordCandidate);
+
+        // Finalize the word
+        else if (valid && chr == ' ')
+        {
+          if (isValidWord(wordCandidate, opt))
+          {
+            wordsFound++;
+            //printf("%i (%i) word: %s\n", wordsFound, wordIndex-1, wordCandidate);
+            if (--wordIndex <= 0) break;
+          }
+
+          // Since chr is a ' ' and we didn't break, start a new word
+          wordCandidate[0] = '\0';
+        }
+
+        // Invalidate the word
+        else valid = false;
+      }
+
+    }
+
+    // Close file
+    fclose(fptr);
+
+    // Avoid infinite loop - close if no word was found
+    if (!wordsFound)
+    {
+      printf("No valid words found...\n");
+      exit(1);
+    }
+
+  }
+
+  // Copy the word
+  if (isValidWord(wordCandidate, opt))
+  {
+    strcpy(word, wordCandidate);
+  }
+  else
+  {
+    printf("Couldn't select a valid word...\n");
+    exit(1);
+  }
+}
+
 int main() {
 
   Screen screen;
   enum Options opt = askDifficulty(screen);
-  char word[WORD_SIZE] = "PANACEIA";
+  char word[WORD_SIZE] = "";
 
   while (opt != CLOSE)
   {
     // Select a word based on difficulty
+    getWord("words.txt", opt, word);
     // Play the game
     playHangman(screen, word);
     // Start Again

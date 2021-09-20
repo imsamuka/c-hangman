@@ -1,6 +1,7 @@
 #include "screenlib.h"
 #include <stdbool.h>
 #include <unistd.h>
+#include <time.h>
 
 const char BLANK_CHR = ' ';
 #define WORD_SIZE 32
@@ -337,6 +338,7 @@ int main() {
   Screen screen;
   enum Options opt = askDifficulty(screen);
   char word[WORD_SIZE] = "";
+  srand(time(NULL));
 
   while (opt != CLOSE)
   {

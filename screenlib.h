@@ -7,6 +7,8 @@
 #define SCREEN_HEIGHT 10
 #define SCREEN_WIDTH 80
 
+#define BLANK_CHR ' '
+
 typedef char Screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 void clear();

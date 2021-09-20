@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 
-const char BLANK_CHR = ' ';
+#define BUF_SIZE 256
 #define WORD_SIZE 32
 
 enum Options { CLOSE, EASY, MEDIUM, HARD };
@@ -254,7 +254,7 @@ void getWord(char* filePath, enum Options opt, char* word)
   bool valid = false;
 
   char chr;
-  char buf[256] = "";
+  char buf[BUF_SIZE] = "";
 
   char wordCandidate[WORD_SIZE] = "";
 
@@ -272,10 +272,10 @@ void getWord(char* filePath, enum Options opt, char* word)
     }
 
     // Iterate through file
-    while (wordIndex > 0 && fgets(buf, 256, fptr))
+    while (wordIndex > 0 && fgets(buf, BUF_SIZE, fptr))
     {
       // Iterate through buffer
-      for (u_char i = 0; i < 256 && buf[i] != '\0'; i++)
+      for (u_char i = 0; i < BUF_SIZE && buf[i] != '\0'; i++)
       {
         chr = upperChar(buf[i]);
 
